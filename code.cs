@@ -5,28 +5,29 @@ using UnityEngine;
 
 public class Collect : MonoBehaviour
 {
+    [SerializeField]
     private AudioSource my_audio;
 
     // Start is called before the first frame update
     void Start()
     {
-        my_audio = GetComponent<AudioSource>();
+        if (GetComponent<AudioSource>() != null)
+        {
+            my_audio = GetComponent<AudioSource>();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Collectible")
-        { 
-            my_audio.Play();
-            Destroy(collision.gameObject);
+        if (collision.gameObject.CompareTag("Collectible"))
+        {
+            AudioSource audioSource = collision.gameObject.GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                my_audio = audioSource;
+                my_audio.Play();
+                Destroy(collision.gameObject);
+            }
         }
     }
 }
-
-
-
